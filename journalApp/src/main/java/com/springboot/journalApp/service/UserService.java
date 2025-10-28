@@ -21,13 +21,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public void saveNewUser(User user){
+    public User saveNewUser(User user){
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setRoles(Arrays.asList("USER"));
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
+            return savedUser;
         } catch (Exception e) {
 //            log.error("Error occurred for {} : ", user.getUserName(), e);
             log.trace("helooooooooo");
@@ -35,6 +37,8 @@ public class UserService {
             log.info("helooooooooo");
             log.warn("helooooooooo");
             log.error("helooooooooo");
+
+            throw new RuntimeException("Falied to create user",e);
         }
     }
 

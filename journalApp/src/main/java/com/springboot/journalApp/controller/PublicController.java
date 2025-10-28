@@ -1,5 +1,7 @@
 package com.springboot.journalApp.controller;
 
+import com.springboot.journalApp.dto.ApiResponse;
+import com.springboot.journalApp.dto.UserDTO;
 import com.springboot.journalApp.entity.User;
 import com.springboot.journalApp.service.UserDetailsServiceImpl;
 import com.springboot.journalApp.service.UserService;
@@ -12,6 +14,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/public")
@@ -36,9 +40,22 @@ public class PublicController {
     }
 
     @PostMapping("/signup")
-    public void signUp(@RequestBody User user){
-        userService.saveNewUser(user);
+    public ResponseEntity<ApiResponse<UserDTO>> signUp(@RequestBody User user){
+        User savedNewUser = userService.saveNewUser(user);
 
+        UserDTO userDTO = UserDTO.builder()
+                .id(savedNewUser.getId().toString())
+                .userName(savedNewUser.getUserName())
+                .roles(savedNewUser.getRoles())
+                .build();
+
+        ApiResponse<UserDTO> response = new ApiResponse<>(
+                "User created successfully...",
+                LocalDateTime.now(),
+                userDTO
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
