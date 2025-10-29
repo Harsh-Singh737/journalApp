@@ -1,5 +1,6 @@
 package com.springboot.journalApp.service;
 
+import com.springboot.journalApp.dto.AllUsersDTO;
 import com.springboot.journalApp.entity.User;
 import com.springboot.journalApp.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -46,8 +48,20 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<User> getAll(){
-        return userRepository.findAll();
+    public List<AllUsersDTO> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    private AllUsersDTO convertToDto(User user) {
+        return AllUsersDTO.builder()
+                .id(user.getId().toString())
+                .userName(user.getUserName())
+                .email(user.getEmail())
+                .roles(user.getRoles())
+                .build();
     }
 
     public Optional<User> findById(ObjectId Id){
