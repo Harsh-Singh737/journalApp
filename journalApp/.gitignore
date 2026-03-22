@@ -15,7 +15,7 @@ target/
 .yml
 /logs
 /log
-/resources
+/src/main/resources
 *.log
 ### IntelliJ IDEA ###
 .idea
