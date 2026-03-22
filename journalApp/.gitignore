@@ -15,7 +15,6 @@ target/
 .yml
 /logs
 /log
-/src/main/resources
 *.log
 ### IntelliJ IDEA ###
 .idea
@@ -35,3 +34,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+/src/main/resources
