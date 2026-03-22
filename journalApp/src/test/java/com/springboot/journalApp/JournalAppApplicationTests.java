@@ -10,7 +10,7 @@ class JournalAppApplicationTests {
 
     @Disabled
     @Test
-	void contextLoads() {
-	}
+    void contextLoads() {
+    }
 
 }
